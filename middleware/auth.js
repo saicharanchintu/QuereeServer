@@ -14,7 +14,7 @@ const auth = (req, res, next) => {
         next();
     } catch (error) {
         console.error('Middleware error: ' + error);
-
+        
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ success: false, message: "Unauthorized: Token has expired" });
         }

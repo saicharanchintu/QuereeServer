@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import User from '../models/auth.js';
 
 export const signup = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, gender, dob, password } = req.body;
     try{
         const existingUser = await User.findOne({ email });
         if(existingUser){
@@ -13,7 +13,7 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const newUser = await User.create({ name, email, password:hashedPassword });
+        const newUser = await User.create({ name, email, gender, dob, password:hashedPassword });
 
         const token = jwt.sign({ email: newUser.email, id:newUser._id},process.env.JWT_SECRET, { expiresIn:'1h'});
 

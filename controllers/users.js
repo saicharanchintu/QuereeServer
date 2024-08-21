@@ -9,67 +9,18 @@ export const getAllUsers = async (req, res) => {
       allUserDetails.push({
         _id: user._id,
         name: user.name,
-        about: user.about,
-        tags: user.tags,
+        gender: user.gender,
+        age: user.age,
+        dob: user.dob,
+        liveIn: user.liveIn,
         joinedOn: user.joinedOn,
         friends: user.friends,
         profileURL: user.profileURL,
-        gender: user.gender,
       });
     });
     res.status(200).json(allUserDetails);
   } catch (error) {
     res.status(404).json({ message: error.message });
-  }
-};
-
-export const follow = async (req, res) => {
-  const user = req.body.userId;
-  const friend = req.body.id;
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      user,
-      {
-        $addToSet: { friends: friend },
-      },
-      { new: true }
-    );
-    await User.findByIdAndUpdate(
-      friend,
-      {
-        $addToSet: { friends: user },
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    console.log(err);
-    res.status(405).json(err);
-  }
-};
-
-export const unfollow = async (req, res) => {
-  const user = req.body.userId;
-  const friend = req.body.id;
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      user,
-      {
-        $pull: { friends: friend },
-      },
-      { new: true }
-    );
-    await User.findByIdAndUpdate(
-      friend,
-      {
-        $pull: { friends: user },
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    console.log(err);
-    res.status(405).json(err);
   }
 };
 
@@ -100,9 +51,10 @@ export const addDisplayPicture = async (req, res) => {
   }
 };
 
+
 export const updateProfile = async (req, res) => {
   const userId = req.params.id;
-  const { name, about, tags, profilePicture, gender } = req.body;
+  const { name, gender, age, dob, liveIn, profilePicture } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).send("Invalid user ID");
@@ -112,7 +64,7 @@ export const updateProfile = async (req, res) => {
     // Update profile information
     const updatedProfile = await User.findByIdAndUpdate(
       userId,
-      { $set: { name, about, tags, gender } },
+      { $set: { name, gender, age, dob, liveIn } },
       { new: true }
     );
 

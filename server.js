@@ -3,13 +3,9 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
-// import Post from "./models/Post.js";
-// import posts from "./data.js";
 
 import userRoutes from "./routes/users.js"
-import questionRoutes from './routes/Questions.js'
-import answerRoutes from './routes/Answers.js'
-import postRoutes from "./routes/Posts.js";
+import imageRoutes from './routes/image.js'
 
 const app = express();
 dotenv.config();
@@ -21,10 +17,8 @@ app.get('/',(req, res) => {
     res.send("This is a Queree API")
 })
 
-app.use("/user", userRoutes)
-app.use('/questions',questionRoutes)
-app.use('/answer',answerRoutes)
-app.use('/post', postRoutes)
+app.use("/api", userRoutes)
+app.use("/image", imageRoutes)
 
 const PORT = process.env.PORT || 5000
 
